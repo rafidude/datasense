@@ -1,6 +1,6 @@
 S3File = (require '../lib/s3file').S3File
 
-fileName = 'test.json'
+fileName = 'test.csv'
 account = 'global'
 
 describe "Amazon S3 file save, get and delete", ->

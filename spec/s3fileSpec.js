@@ -1,7 +1,7 @@
 (function() {
   var S3File, account, fileName;
   S3File = (require('../lib/s3file')).S3File;
-  fileName = 'test.json';
+  fileName = 'test.csv';
   account = 'global';
   describe("Amazon S3 file save, get and delete", function() {
     it("delete a file from Amazon S3", function() {
