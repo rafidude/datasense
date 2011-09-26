@@ -28,7 +28,11 @@
     return it("gets a file from Amazon S3", function() {
       var s3;
       s3 = new S3File(account, fileName);
-      return s3.get();
+      s3.get(function(err, res) {
+        expect(res).toContain('AgileSense');
+        return asyncSpecDone();
+      });
+      return asyncSpecWait();
     });
   });
 }).call(this);

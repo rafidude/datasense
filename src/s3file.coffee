@@ -9,11 +9,14 @@ exports.S3File = class S3File
   constructor: (@account, @fileName) ->
     @destinationFileName = @account + "/" + @fileName
 
-  get: ->
+  get: (callback) ->
+    buffer = ""
     client.get(@destinationFileName).on("response", (res) ->
       res.setEncoding "utf8"
       res.on "data", (chunk) ->
-        console.log chunk
+        buffer += chunk
+      res.on "end", ->
+        callback null, buffer
     ).end()
   
   save: (path = null, callback)->

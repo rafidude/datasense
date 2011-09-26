@@ -23,5 +23,8 @@ describe "Amazon S3 file save, get and delete", ->
 
   it "gets a file from Amazon S3", ->
     s3 = new S3File account, fileName
-    s3.get()
+    s3.get (err, res) ->
+      expect(res).toContain('AgileSense')
+      asyncSpecDone()
+    asyncSpecWait()
 

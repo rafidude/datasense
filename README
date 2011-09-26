@@ -1,0 +1,42 @@
+Useful Commands:
+ps aux | grep node
+kill -9 PID
+
+expect(x).toEqual(y)
+expect(x).toBe(y)
+expect(x).toMatch(pattern)
+expect(x).toBeDefined()
+expect(x).toBeNull()
+expect(x).toBeTruthy()
+expect(x).toBeFalsy()
+expect(x).toContain(y)
+expect(x).toBeLessThan(y)
+expect(x).toBeGreaterThan(y)
+
+describe 'jasmine testing using CoffeeScript', ->
+  a = 1
+  beforeEach ->
+    a += 1
+  afterEach ->
+    a += 1
+  it 'should do beforeEach', ->
+    expect(a).toEqual 2
+  it 'should do afterEach', ->
+    expect(a).toEqual 4
+  it 'is a pending spec'
+
+Older:
+h2 Upload File
+form(id="MyForm", action="http://api2.transloadit.com/assemblies", enctype="multipart/form-data", method="POST")
+  input(type="hidden", name="params", value="{&quot;auth&quot;:{&quot;expires&quot;:&quot;2011/10/01 16:53:14+00:00&quot;,&quot;key&quot;:&quot;1580cee65f904f7399ca08a1a844cfab&quot;},&quot;template_id&quot;:&quot;b902f75dba8a4fadb054ab068e705b97&quot;}")
+  input(type="hidden", name="signature", value="0c08032007887ea91240317d1813ad13dcbab37c")
+  input(type="file", name="my_file")
+  br
+  input(type="submit", value="Upload")
+  script(type="text/javascript", src="http://assets.transloadit.com/js/jquery.transloadit2.js")
+  script(type="text/javascript", charset="utf-8")
+    $(document).ready(function() {
+       $('#MyForm').transloadit({
+          wait: true
+       });
+    });
