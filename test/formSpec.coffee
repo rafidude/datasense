@@ -1,4 +1,4 @@
-Form = (require '../lib/formModel').Form
+Form = (require '../lib/commonModels').Form
 form = new Form 'role'
 
 getFormDefinitions = ->

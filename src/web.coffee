@@ -1,7 +1,7 @@
 express = require("express")
-DB = (require "./db").DB
-collectionName = 'transloadit'
-db = new DB collectionName
+FileUpload = (require '../lib/commonModels').FileUpload
+fileUpload = new FileUpload
+utils = (require '../lib/dutils')
 
 app = module.exports = express.createServer()
 app.set 'views', __dirname + '/../views'
@@ -19,25 +19,17 @@ app.get "/", (req, res) ->
 
 app.post "/filesready", (req, res) ->
   console.log req.params.transloadit
-  # res.end req.params.transloadit
 
 app.get "/done", (req, res) ->
   data = req.query
-  db.insert data, (err, success) ->
+  fileUpload.save data, (err, success) ->
     res.end JSON.stringify(data)
+
+setInterval ->
+    fileUpload.getAll (err, docs) ->
+      # console.log docs
+      utils.parseFile(doc.assembly_url) for doc in docs
+  , 5000
 
 app.listen 3000
 console.log "Express app started on port 3000"
-
-parseFile = (url) ->
-  console.log url
-  # if the status is complete
-  # get the amazon file
-  # parse the file
-  # store results in mongoDB
-
-setInterval ->
-    db.find {}, (err, docs) ->
-      # console.log docs
-      parseFile(doc.assembly_url) for doc in docs
-  , 5000

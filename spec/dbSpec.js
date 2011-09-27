@@ -9,7 +9,7 @@
       name: "BMCM",
       age: 40
     };
-    return db.emptyTable(function(success) {
+    return db.removeAll(function(success) {
       return db.insert(doc1, function(err, success) {
         var doc2;
         doc2 = {
@@ -24,7 +24,7 @@
   };
   describe("Core database functionality", function() {
     it("should empty the table", function() {
-      db.emptyTable(function(success) {
+      db.removeAll(function(success) {
         return db.find({}, function(err, docs) {
           expect(docs.length).toBe(0);
           return asyncSpecDone();
@@ -33,7 +33,7 @@
       return asyncSpecWait();
     });
     it("should insert two documents Asynchronously into testcoll", function() {
-      db.emptyTable(function(success) {
+      db.removeAll(function(success) {
         var doc1;
         doc1 = {
           name: "BMCM",

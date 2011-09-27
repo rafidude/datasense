@@ -5,7 +5,7 @@ db = new DB collectionName
 
 insertTwoDocs = (callback) ->
   doc1 = {name: "BMCM", age: 40}
-  db.emptyTable (success)->
+  db.removeAll (success)->
     db.insert doc1, (err, success) ->
       doc2 = {name: "RFP", age: 1}
       db.insert doc2, (err, success) ->
@@ -13,14 +13,14 @@ insertTwoDocs = (callback) ->
 
 describe "Core database functionality", ->
   it "should empty the table", ->
-    db.emptyTable (success) ->
+    db.removeAll (success) ->
       db.find {}, (err, docs) ->
         expect(docs.length).toBe 0
         asyncSpecDone()
     asyncSpecWait()
 
   it "should insert two documents Asynchronously into testcoll", ->
-    db.emptyTable (success)->
+    db.removeAll (success)->
       doc1 = {name: "BMCM", age: 40}
       db.insertAsync doc1, (err, success) ->
         doc2 = {name: "RFP", age: 1}

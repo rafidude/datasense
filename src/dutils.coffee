@@ -20,4 +20,34 @@ getUploadParams = ->
   console.log [encodedParams, paramsStr, hash]
   [encodedParams, paramsStr, hash]
 
-getUploadParams()
+# getUploadParams()
+S3File = (require '../lib/s3file').S3File
+CSV2JS = require '../lib/CSV2JS'
+toJS = CSV2JS.csvToJs
+ParsedData = (require '../lib/commonModels').ParsedData
+parsedData = new ParsedData
+request = require("request")
+FileUpload = (require '../lib/commonModels').FileUpload
+fileUpload = new FileUpload
+
+exports.parseFile = parseFile = (url) ->
+  # if the status is complete, get the amazon file, parse the file, store results in mongoDB
+  console.log url
+  request url, (error, response, body) =>
+    if not error and response.statusCode == 200
+      result = JSON.parse(body)
+      s3url = result.results[':original'][0].url
+      arrurl = s3url.split('/')
+      account = arrurl[3]
+      fileName = '/' + arrurl[4] + '/' + arrurl[5]
+      s3 = new S3File account, fileName
+      s3.get (err, res) =>
+        if err
+          console.log err
+        else 
+          parsedRet = toJS res
+          parsedData.save parsedRet.data, (err, success) =>
+            console.log "Saved data after parsing the file uploaded: #{url}"
+            fileUpload.remove {assembly_url: url}, (err, success) ->
+              if err then console.log err else console.log "removed row"
+

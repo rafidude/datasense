@@ -32,6 +32,8 @@ exports.DB = class DB
   # INSERT db.insert "collectionName", document, (err, success) ->
   insert : (document, callback) ->
     @connCollection (err, conn, coll) ->
+      if (document._id? and document._id is ' ') 
+        document._id = new conn.bson_serializer.ObjectID()
       coll.insert document, {safe: true}, (err, success) ->
         conn.close()
         if err then callback err, false else callback null, true
@@ -117,6 +119,6 @@ exports.DB = class DB
         if err then callback err, false else callback null, true
 
   # Remove all rows from a collection
-  emptyTable : (callback) ->
+  removeAll : (callback) ->
     @remove null, (err, success) ->
       if err then callback false else callback true if callback?

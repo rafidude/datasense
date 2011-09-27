@@ -17,5 +17,9 @@ exports.Model = class Model
       if err then callback err, null else callback null, result if callback?
   
   removeAll: (callback) =>
-    @db.emptyTable (success) ->
+    @db.removeAll (success) ->
+      callback() if callback?
+      
+  remove: (criteria, callback) =>
+    @db.remove (err, success) ->
       callback() if callback?
