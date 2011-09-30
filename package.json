@@ -1,7 +1,7 @@
 { "name": "datasense"
 , "description": "Make sense of data"
 , "author": "agilesense"
-, "version": "0.2"
+, "version": "0.2.0"
 , "repository":
   { "type": "git"
   , "url": "git@github.com:rafidude/datasense.git"
