@@ -14,6 +14,7 @@
 ,   "jade": ">=0.15.4"
 ,   "request": ">=2.1.1"
 ,   "validator": ">=0.2.8"
+,   "knox": ">=0.0.9"
   }
 , "devDependencies":
   { "coffee-script": ">=1.1.1"
