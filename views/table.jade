@@ -1,0 +1,37 @@
+script(type='text/javascript', src='http://code.jquery.com/jquery-latest.js')
+script(type='text/javascript', src='raphael-min.js')
+script(type='text/javascript', src='g.raphael-min.js')
+script(type='text/javascript', src='g.bar-min.js')
+script(type='text/javascript', src='g.line-min.js')
+script(type='text/javascript', src='g.pie-min.js')
+script(type='text/javascript', src='charts.js')
+style
+  #canvas_container {width: 800px; border: 2px solid white;}
+script(type='text/javascript', src='jquery.dataTables.min.js')
+link(href='/css/demo_table.css', rel='stylesheet', type='text/css')
+script(type='text/javascript')
+  $(function(){     
+    $('#table_id').dataTable({"sScrollY": "400px","bPaginate": false});
+  });
+
+h1 Data Visualizations Bar, Line and Pie Charts
+#canvas_container
+br
+br
+h1 Data Grid showing Donor Data of #{data.length} Rows
+br
+form#myForm()
+  label(for="top") Top
+  input#top(type="text", name="top", size="35", value=top)
+  button#button Submit
+table#table_id.display
+  thead
+    th Name
+    th Date
+    th Amount
+  tbody
+    - for row in data
+      tr
+        td= row.name
+        td= row.date
+        td= row.amount

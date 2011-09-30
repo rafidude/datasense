@@ -1,0 +1,30 @@
+body { background: url("http://www.danielhoggan.co.uk/bg.jpg") repeat 0 0 #24282a; color: #fff; font-family: georgia, Palatino Linotype, Book Antiqua, Palatino, serif; font-size: 100%; line-height: 100%; margin: 5px; }
+div.clear { clear: both; }
+a { color: inherit; }
+cite { font-style: italic; }
+strong { font-weight: bold; }
+b { font-weight: normal; }
+canvas { margin: 0; }
+h2 { margin: 0 0 1em 0; color: #75cf2c; font-family: georgia, Palatino Linotype, Book Antiqua, Palatino, serif; font-size: 120%;  background: #24282a; padding: 0.1em 0.3em; text-decoration: none;}
+ 
+a { text-decoration: none; }
+a:hover, a:active, a:focus { color: #75cf2c; }
+
+#container { margin: 40px 70px 0 70px; width: 42em; }
+	#intro { font-size: 1.88em; font-family: georgia, Palatino Linotype, Book Antiqua, Palatino, serif; font-weight: 300; line-height: 1.4em; margin: 0 0 1.2em 0; }
+	#blurb { font-family: georgia, Palatino Linotype, Book Antiqua, Palatino, serif; font-size: 0.8em; line-height: 1.8em; }
+		#blurb p { font-family: georgia, Palatino Linotype, Book Antiqua, Palatino, serif; margin-bottom: 2em; }
+	#contact { font-size: 1.5em;font-family: georgia, Palatino Linotype, Book Antiqua, Palatino, serif; font-weight: 100; line-height: 1.4em; margin: 1.5em 0 1.5em 0; }
+		#contact li { margin: 0 0 0.2em 0; }
+			/*#contact li:nth-child(1) { -moz-transform: rotate(-3deg); -webkit-transform: rotate(-3deg); margin: 0 0 1.2em 0; }
+			#contact li:nth-child(2) { -moz-transform: rotate(1deg); -webkit-transform: rotate(1deg); margin: 0 0 0 0; }
+			#contact li:nth-child(3) { margin: 0 0 0 0; }
+			#contact li:nth-child(4) { -moz-transform: rotate(-2deg); -webkit-transform: rotate(-2deg); margin: 0 0 0.4em 0; }
+			#contact li:nth-child(5) { -moz-transform: rotate(-1deg); -webkit-transform: rotate(-1deg); margin: 0 0 0.5em 0; }
+			#contact li:nth-child(6) { -moz-transform: rotate(1deg); -webkit-transform: rotate(1deg); }
+			#contact li:nth-child(7) { -moz-transform: rotate(-1deg); -webkit-transform: rotate(-1deg); }*/
+		#contact a { background: #24282a; padding: 0.1em 0.3em; text-decoration: none; }
+		.content { 
+clear: both;
+font-size: 4pt; 
+}

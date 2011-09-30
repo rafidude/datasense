@@ -1,0 +1,9 @@
+{
+ "Name" : "Beatles",
+ "Country" : "England",
+ "YearFormed" : 1959,
+ "Style" : "Rock'n'Roll",
+ "Members" : ["Paul","John","George","Ringo"],
+ "bars1" :  [55, 20, 13, 32, 5, 1, 2, 10],
+ "bars2" : [10, 2, 1, 5, 32, 13, 20, 55] 
+}

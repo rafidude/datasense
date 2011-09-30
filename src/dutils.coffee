@@ -32,7 +32,6 @@ fileUpload = new FileUpload
 
 exports.parseFile = parseFile = (url) ->
   # if the status is complete, get the amazon file, parse the file, store results in mongoDB
-  console.log url
   request url, (error, response, body) =>
     if not error and response.statusCode == 200
       result = JSON.parse(body)

@@ -1,14 +1,23 @@
 (function() {
-  var DataGen, ParsedData, columnsDef, generateDonorData, transforms;
+  var DataGen, ParsedData, columnsDef, generateDonorData, maleNames, surNames, transforms;
   DataGen = (require("../lib/dataGen")).DataGen;
   ParsedData = (require('../lib/commonModels')).ParsedData;
   columnsDef = {
     ID: 'auto',
     memberID: 'number random 1000',
+    name: 'string function getName',
     dateDonated: 'date random 365',
     Amount: 'number function getAmount'
   };
+  maleNames = ['James', 'John'];
+  surNames = ['Smith', 'Johnson'];
   transforms = {
+    getName: function() {
+      var idx, idx2;
+      idx = Math.floor(Math.random() * maleNames.length);
+      idx2 = Math.floor(Math.random() * surNames.length);
+      return maleNames[idx] + ' ' + surNames[idx2];
+    },
     getAmount: function() {
       var amount, donation;
       amount = Math.floor(Math.random() * 1000);
@@ -55,6 +64,17 @@
       expect(data[0].memberID).toBeLessThan(1001);
       expect(data[1].memberID).toBeGreaterThan(0);
       return expect(data[1].memberID).toBeLessThan(1001);
+    });
+    it("should generate string names", function() {
+      var data, dataGen, idx, namesArr;
+      dataGen = new DataGen(columnsDef, 2, transforms);
+      data = dataGen.generateData();
+      expect(data.length).toBe(2);
+      namesArr = data[0].name.split(' ');
+      idx = maleNames.indexOf(namesArr[0]);
+      expect(idx).toBeGreaterThan(-1);
+      idx = surNames.indexOf(namesArr[1]);
+      return expect(idx).toBeGreaterThan(-1);
     });
     it("should call user defined functions", function() {
       var data, dataGen;

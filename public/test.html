@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <title>Raphael Testing</title>
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="raphael-min.js"></script>
+        <script src="g.raphael-min.js"></script>
+        <script src="g.bar-min.js"></script>
+        <script src="test4.js"></script>
+        <style>
+            #canvas_container {
+                width: 800px;
+                border: 1px solid #aaa;
+            }
+        </style>
+        <script src="jquery.dataTables.min.js"></script>
+        <style type="text/css" title="currentStyle">
+        	@import "/css/demo_table.css";
+        </style>
+        <script>
+        $(document).ready( function () {
+        	$('#table_id').dataTable({
+        	  "sScrollY": "200px",
+        	  "bPaginate": false
+        	}
+        	  );
+        } );
+        </script>
+        
+    </head>
+    <body>
+        <div id="canvas_container"></div>
+        <br/><br/>
+        <table id="table_id" class="display">
+        	<thead>
+        		<tr>
+        			<th>Column 1</th>
+        			<th>Column 2</th>
+        		</tr>
+        	</thead>
+        	<tbody>
+        		<tr>
+        			<td>Row 1 Z 1</td>
+        			<td>Row 1 Data 2</td>
+        		</tr>
+        		<tr>
+        			<td>Row 2 Z 1</td>
+        			<td>Row 2 Data 2</td>
+        		</tr>
+        		<tr>
+        			<td>Row 3 B 1</td>
+        			<td>Row 3 Data 2</td>
+        		</tr>
+        		<tr>
+        			<td>Row 4 B 1</td>
+        			<td>Row 4 Data 2</td>
+        		</tr>
+        		<tr>
+        			<td>Row 5 B 1</td>
+        			<td>Row 5 Data 2</td>
+        		</tr>
+        		<tr>
+        			<td>Row 6 C 1</td>
+        			<td>Row 6 Data 2</td>
+        		</tr>
+        		<tr>
+        			<td>Row 7 C 1</td>
+        			<td>Row 7 Data 2</td>
+        		</tr>
+        	</tbody>
+        </table>
+    </body>
+</html>
