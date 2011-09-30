@@ -1,7 +1,7 @@
 { "name": "datasense"
 , "description": "Make sense of data"
 , "author": "agilesense"
-, "version": "1.1"
+, "version": "0.2"
 , "repository":
   { "type": "git"
   , "url": "git@github.com:rafidude/datasense.git"
@@ -12,13 +12,12 @@
     "mongodb": ">=0.9.6"
 ,   "express": ">=2.4.6"
 ,   "jade": ">=0.15.4"
-,   "validator": ">=0.2.8"
 ,   "request": ">=2.1.1"
   }
 , "devDependencies":
   { "coffee-script": ">=1.1.1"
   }
 , "engines":
-  { "node": ">=0.4"
+  { "node": ">=0.4.7"
   }
 }
