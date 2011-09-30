@@ -62,8 +62,10 @@ setInterval ->
       utils.parseFile(doc.assembly_url) for doc in docs
   , 5000
 
-app.listen 3000
-console.log "Express app started on port 3000"
+port = process.env.PORT or 3000
+unless module.parent
+  app.listen port
+  console.log "Express server listening on port %d", app.address().port
 process.on 'uncaughtException', ->
   console.log 'Uncaught Exception: %s', err.message
 
