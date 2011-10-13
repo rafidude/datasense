@@ -3,6 +3,7 @@ FileUpload = (require './commonModels').FileUpload
 fileUpload = new FileUpload
 utils = (require './dutils')
 ParsedData = (require './commonModels').ParsedData
+User = (require './commonModels').User
 
 app = module.exports = express.createServer()
 app.set 'views', __dirname + '/../views'
@@ -15,8 +16,50 @@ app.configure ->
   app.use express.static __dirname + '/../public'
   app.use app.router
 
+app.configure 'development', ->
+  app.use express.errorHandler
+    dumpExceptions: true
+    showStack: true
+
+requiresLogin = (req, res, next) ->
+  wfUrl = req.params.wf
+  if req.session.user
+    org = req.session.user.org
+    next()
+  else
+    res.redirect '/login?redir=' + req.url
+
+app.get "/upload", (req, res) ->
+  res.render 'upload'
+
 app.get "/", (req, res) ->
-  res.render 'test'
+  res.render 'login'
+
+app.get "/login", (req, res) ->
+  res.render 'login'
+
+app.post "/login", (req, res) ->
+  console.log req.body.redir
+  console.log req.body.data
+  email = req.body.data.email
+  password = req.body.data.password
+  userI = new User email
+  userI.get (err, user) ->
+    throw err if err
+    if user and user.password is password
+      req.session.user = user
+      res.redirect req.body.redir or '/charts'
+    else
+      res.redirect '/', locals: redir: req.body.redir
+
+app.get "/newaccount", (req, res) ->
+  res.render 'newaccount'
+
+app.post "/newaccount", (req, res) ->
+  data = req.body
+  user = new User
+  user.save data, (err, success) ->
+    res.end JSON.stringify(data)
 
 app.post "/filesready", (req, res) ->
   console.log req.params.transloadit
@@ -26,7 +69,7 @@ app.get "/done", (req, res) ->
   fileUpload.save data, (err, success) ->
     res.end JSON.stringify(data)
 
-app.get "/generatedata/:rows?", (req, res) ->
+app.get "/generatedata/:rows?", requiresLogin, (req, res) ->
   rows = req.params.rows
   if not rows? and isNaN parseInt(rows) then rows = 100 else rows = parseInt(rows)
   maleNames = ['James','John','Robert','Michael','William','David','Richard','Charles','Joseph','Thomas','Christopher','Daniel','Paul','Mark','Donald','George','Kenneth','Steven','Edward','Brian','Ronald','Anthony','Kevin','Jason','Matthew','Gary','Timothy','Jose','Larry','Jeffrey','Frank','Scott','Eric','Stephen','Andrew','Raymond','Gregory','Joshua','Jerry','Dennis','Walter','Patrick','Peter','Harold','Douglas','Henry','Carl','Arthur','Ryan','Roger','Joe','Juan','Jack','Albert','Jonathan','Justin','Terry','Gerald','Keith','Samuel','Willie','Ralph','Lawrence','Nicholas','Roy','Benjamin','Bruce','Brandon','Adam','Harry','Fred','Wayne','Billy','Steve','Louis','Jeremy','Aaron','Randy','Howard','Eugene','Carlos','Russell','Bobby','Victor','Martin','Ernest','Phillip','Todd','Jesse','Craig','Alan','Shawn','Clarence','Sean','Philip','Chris','Johnny','Earl','Jimmy','Antonio','Danny','Bryan','Tony','Luis','Mike','Stanley','Leonard','Nathan','Dale','Manuel','Rodney','Curtis','Norman','Allen','Marvin','Vincent','Glenn','Jeffery','Travis','Jeff','Chad','Jacob','Lee','Melvin','Alfred','Kyle','Francis','Bradley','Jesus','Herbert','Frederick','Ray','Joel','Edwin','Don','Eddie','Ricky','Troy','Randall','Barry','Alexander','Bernard','Mario','Leroy','Francisco','Marcus','Micheal','Theodore','Clifford','Miguel','Oscar','Jay','Jim','Tom','Calvin','Alex','Jon','Ronnie','Bill','Lloyd','Tommy','Leon','Derek','Warren','Darrell','Jerome','Floyd','Leo','Alvin','Tim','Wesley','Gordon','Dean','Greg','Jorge','Dustin','Pedro','Derrick','Dan','Lewis','Zachary','Corey','Herman','Maurice','Vernon','Roberto','Clyde','Glen','Hector','Shane','Ricardo','Sam','Rick','Lester','Brent','Ramon','Charlie','Tyler','Gilbert','Gene','Marc','Reginald','Ruben','Brett','Angel','Nathaniel','Rafael','Leslie','Edgar','Milton','Raul','Ben','Chester','Cecil','Duane','Franklin','Andre','Elmer','Brad','Gabriel','Ron','Mitchell','Roland','Arnold','Harvey','Jared','Adrian','Karl','Cory','Claude','Erik','Darryl','Jamie','Neil','Jessie','Christian','Javier','Fernando','Clinton','Ted','Mathew','Tyrone','Darren','Lonnie','Lance','Cody','Julio','Kelly','Kurt','Allan','Nelson','Guy','Clayton','Hugh','Max','Dwayne','Dwight','Armando','Felix','Jimmie','Everett','Jordan','Ian','Wallace','Ken','Bob','Jaime','Casey','Alfredo','Alberto','Dave','Ivan','Johnnie','Sidney','Byron','Julian','Isaac','Morris','Clifton','Willard','Daryl','Ross','Virgil','Andy','Marshall','Salvador','Perry','Kirk','Sergio','Marion','Tracy','Seth','Kent','Terrance','Rene','Eduardo','Terrence','Enrique','Freddie','Wade']
@@ -63,13 +106,15 @@ setInterval ->
   , 5000
 
 port = process.env.PORT or 3000
+
 unless module.parent
   app.listen port
   console.log "Express server listening on port %d", app.address().port
+
 process.on 'uncaughtException', ->
   console.log 'Uncaught Exception: %s', err.message
 
-app.get "/charts", (req, res) ->  
+app.get "/charts", requiresLogin, (req, res) ->  
   parsedData = new ParsedData
   parsedData.getAll (err, data) ->
     for obj in data
@@ -97,7 +142,7 @@ app.get "/charts", (req, res) ->
     top = null if top is -1
     res.render "table", data: data, top: top
 
-app.get "/donations", (req, res) ->
+app.get "/donations", requiresLogin, (req, res) ->
   parsedData = new ParsedData
   parsedData.getAll (err, data) ->
     donationsArray = []

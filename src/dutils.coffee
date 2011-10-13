@@ -50,3 +50,4 @@ exports.parseFile = parseFile = (url) ->
             fileUpload.remove {assembly_url: url}, (err, success) ->
               if err then console.log err else console.log "removed row"
 
+

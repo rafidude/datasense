@@ -6,7 +6,9 @@
     var user1;
     user1 = {
       name: 'Test User',
-      email: 'user1@test.com'
+      email: 'user1@test.com',
+      password: 'test',
+      url: 'test'
     };
     return [user1];
   };
@@ -36,6 +38,7 @@
           return user.get(function(err, result) {
             expect(result.email).toBe('user1@test.com');
             expect(result.name).toBe('Test User');
+            expect(result.url).toBe('test');
             return asyncSpecDone();
           });
         });

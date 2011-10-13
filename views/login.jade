@@ -1,0 +1,11 @@
+h2 Login
+form(action="/login", method="POST")
+  | Email:
+  br
+  input(type="text", name="data[email]")
+  br
+  | Password: 
+  br
+  input(type="text", name="data[password]")
+  br
+  input(type="submit", value="Login")

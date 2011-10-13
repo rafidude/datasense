@@ -1,0 +1,19 @@
+h2 New Account
+form(action="/newaccount", method="POST")
+  | Name: 
+  br
+  input(type="text", name="data[name]")
+  br
+  | Email: 
+  br
+  input(type="text", name="data[email]")
+  br
+  | Password: 
+  br
+  input(type="text", name="data[password]")
+  br
+  | Account (your website name): 
+  br
+  input(type="text", name="data[url]")
+  br
+  input(type="submit", value="Create Account")

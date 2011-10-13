@@ -2,7 +2,7 @@ User = (require '../lib/commonModels').User
 FileUpload = (require '../lib/commonModels').FileUpload
 
 getUsers = ->
-  user1 = name: 'Test User', email: 'user1@test.com'
+  user1 = name: 'Test User', email: 'user1@test.com', password: 'test', url: 'test'
   [user1]
 
 getFileUploads = ->
@@ -21,6 +21,7 @@ describe "Security, users retrieve/save", ->
         user.get (err, result) ->
           expect(result.email).toBe 'user1@test.com'
           expect(result.name).toBe 'Test User'
+          expect(result.url).toBe 'test'
           asyncSpecDone()
     asyncSpecWait()
 
