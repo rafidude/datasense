@@ -1,4 +1,5 @@
 ParsedData = (require '../models/commonModels').ParsedData
+utils = (require '../utils/dutils')
 
 module.exports = (app) ->
   requiresLogin = (req, res, next) ->
@@ -62,7 +63,7 @@ module.exports = (app) ->
           if isNaN parseInt(top) then top = -1 else top = parseInt(top)
         #splice the data
         if top != -1
-          descBy(data, "amount")
+          utils.descBy(data, "amount")
           data.splice(top)
       top = null if top is -1
       res.render "table", data: data, top: top
