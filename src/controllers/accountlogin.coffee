@@ -23,7 +23,8 @@ module.exports = (app) ->
     res.render 'newaccount'
 
   app.post "/newaccount", (req, res) ->
-    data = req.body
+    data = req.body.data
+    console.log data
     user = new User
     user.save data, (err, success) ->
       res.end JSON.stringify(data)
