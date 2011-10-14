@@ -1,7 +1,7 @@
 (function() {
   var FileUpload, User, getFileUploads, getUsers;
-  User = (require('../lib/commonModels')).User;
-  FileUpload = (require('../lib/commonModels')).FileUpload;
+  User = (require('../lib/models/commonModels')).User;
+  FileUpload = (require('../lib/models/commonModels')).FileUpload;
   getUsers = function() {
     var user1;
     user1 = {

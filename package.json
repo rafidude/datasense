@@ -6,7 +6,7 @@
   { "type": "git"
   , "url": "git@github.com:rafidude/datasense.git"
   }
-, "main": "./lib/web.js"
+, "main": "./lib/controllers/web.js"
 , "dependencies":
   {
     "mongodb": ">=0.9.6"

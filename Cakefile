@@ -32,5 +32,5 @@ task 'specw', 'Recompile CoffeeScript spec source files when modified', ->
   runCommand 'coffee', options
 
 task 'run', 'Run the web application using node-supervisor', ->
-  options = ['-w', 'lib', '-p', 'lib/web.js']
+  options = ['-w', 'lib', '-p', 'lib/controllers/web.js']
   runCommand 'supervisor', options

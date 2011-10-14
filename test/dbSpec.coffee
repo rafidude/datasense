@@ -1,4 +1,4 @@
-DB = (require "../lib/db").DB
+DB = (require "../lib/models/db").DB
 
 collectionName = 'testcoll'
 db = new DB collectionName

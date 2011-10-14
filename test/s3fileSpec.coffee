@@ -1,4 +1,4 @@
-S3File = (require '../lib/s3file').S3File
+S3File = (require '../lib/utils/s3file').S3File
 
 fileName = 'test.csv'
 account = 'global'

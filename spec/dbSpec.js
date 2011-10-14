@@ -1,6 +1,6 @@
 (function() {
   var DB, collectionName, db, insertTwoDocs;
-  DB = (require("../lib/db")).DB;
+  DB = (require("../lib/models/db")).DB;
   collectionName = 'testcoll';
   db = new DB(collectionName);
   insertTwoDocs = function(callback) {

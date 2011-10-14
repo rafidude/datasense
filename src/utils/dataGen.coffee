@@ -1,4 +1,4 @@
-ParsedData = (require './commonModels').ParsedData
+ParsedData = (require '../models/commonModels').ParsedData
 
 exports.DataGen = class DataGen
   constructor: (@definition, @dataRows = 10, @transforms = null) ->

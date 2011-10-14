@@ -1,5 +1,5 @@
-User = (require '../lib/commonModels').User
-FileUpload = (require '../lib/commonModels').FileUpload
+User = (require '../lib/models/commonModels').User
+FileUpload = (require '../lib/models/commonModels').FileUpload
 
 getUsers = ->
   user1 = name: 'Test User', email: 'user1@test.com', password: 'test', url: 'test'

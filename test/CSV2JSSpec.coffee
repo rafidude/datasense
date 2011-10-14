@@ -1,4 +1,4 @@
-CSV2JS = require '../lib/CSV2JS'
+CSV2JS = require '../lib/utils/CSV2JS'
 
 toJS = CSV2JS.csvToJs
 

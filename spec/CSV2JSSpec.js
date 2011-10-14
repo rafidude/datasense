@@ -1,6 +1,6 @@
 (function() {
   var CSV2JS, toJS;
-  CSV2JS = require('../lib/CSV2JS');
+  CSV2JS = require('../lib/utils/CSV2JS');
   toJS = CSV2JS.csvToJs;
   describe("Convert a CSV string into JSON", function() {
     it("requires a non-empty CSV content", function() {

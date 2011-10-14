@@ -1,7 +1,7 @@
 (function() {
   var DataGen, ParsedData, columnsDef, generateDonorData, maleNames, surNames, transforms;
-  DataGen = (require("../lib/dataGen")).DataGen;
-  ParsedData = (require('../lib/commonModels')).ParsedData;
+  DataGen = (require("../lib/utils/dataGen")).DataGen;
+  ParsedData = (require('../lib/models/commonModels')).ParsedData;
   columnsDef = {
     ID: 'auto',
     memberID: 'number random 1000',

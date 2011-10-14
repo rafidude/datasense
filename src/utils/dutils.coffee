@@ -1,3 +1,16 @@
+dynamicSort = (property) ->
+  func = (a, b) ->
+    return -1 if (a[property] < b[property])
+    return 1 if (a[property] > b[property])
+    return 0
+  return func
+
+exports.ascBy = ascBy = (arr, property) ->
+  return arr.sort(dynamicSort(property))
+
+exports.descBy = descBy = (arr, property) ->
+  return arr.sort(dynamicSort(property)).reverse()
+  
 crypto = require 'crypto'
 sanitize = require("validator").sanitize
 
@@ -21,13 +34,13 @@ getUploadParams = ->
   [encodedParams, paramsStr, hash]
 
 # getUploadParams()
-S3File = (require '../lib/s3file').S3File
-CSV2JS = require '../lib/CSV2JS'
+S3File = (require './s3file').S3File
+CSV2JS = require './CSV2JS'
 toJS = CSV2JS.csvToJs
-ParsedData = (require '../lib/commonModels').ParsedData
+ParsedData = (require '../models/commonModels').ParsedData
 parsedData = new ParsedData
 request = require("request")
-FileUpload = (require '../lib/commonModels').FileUpload
+FileUpload = (require '../models/commonModels').FileUpload
 fileUpload = new FileUpload
 
 exports.parseFile = parseFile = (url) ->

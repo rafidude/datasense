@@ -1,6 +1,6 @@
 (function() {
   var Form, form, getFormDefinitions;
-  Form = (require('../lib/commonModels')).Form;
+  Form = (require('../lib/models/commonModels')).Form;
   form = new Form('role');
   getFormDefinitions = function() {
     var formDef1, formDef2, formDef3;
