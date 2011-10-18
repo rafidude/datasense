@@ -26,11 +26,11 @@ getUrls()
 
 app.get "*", (req, res, next) ->
   if req.url is "/" or req.url is "/login" or req.url is "/newaccount" or req.url is "/favicon.ico"
+    next()
   else
-    url = req.session?.url
-    if url?
-      validUrl = url in urls
-  next()
+    url = req.url.split('/')[1]
+    sessionUrl = req.session?.url
+    if sessionUrl? and url is sessionUrl then next() else res.redirect '/login'
 
 require('./accountlogin')(app)
 require('./dashboard')(app)

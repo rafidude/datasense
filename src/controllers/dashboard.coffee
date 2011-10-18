@@ -1,13 +1,11 @@
-ParsedData = (require '../models/commonModels').ParsedData
+DataColl = (require '../models/commonModels').DataColl
 utils = (require '../utils/dutils')
 
 module.exports = (app) ->
   requiresLogin = (req, res, next) ->
-    console.log req.params.url
-    if req.session.url
-      next()
-    else
-      res.redirect '/login?redir=' + req.url
+    url = req.url.split('/')[1]
+    sessionUrl = req.session?.url
+    if sessionUrl? and url is sessionUrl then next() else res.redirect '/login'
 
   app.get "/:url/generatedata/:rows?", requiresLogin, (req, res) ->
     rows = req.params.rows
@@ -37,12 +35,13 @@ module.exports = (app) ->
     console.log rows
     dataGen = new (require "../utils/dataGen").DataGen columns, rows, transforms
     data = dataGen.generateData()
-    dataGen.saveData data, (err, result) ->
+    dataGen.saveData url + 'DonorView', data, (err, result) ->
       res.redirect "/#{url}/charts"
 
   app.get "/:url/charts", requiresLogin, (req, res) ->  
-    parsedData = new ParsedData
-    parsedData.getAll (err, data) ->
+    url = req.params.url
+    dataColl = new DataColl url + 'DonorView', id: ' '
+    dataColl.getAll (err, data) ->
       for obj in data
         d = new Date(obj.dateDonated)
         curr_date = d.getDate()
@@ -68,9 +67,11 @@ module.exports = (app) ->
       top = null if top is -1
       res.render "table", data: data, top: top
 
-  app.get "/:url/donations", requiresLogin, (req, res) ->
-    parsedData = new ParsedData
-    parsedData.getAll (err, data) ->
+  app.get "/:url/charts.json", requiresLogin, (req, res) ->
+    url = req.params.url
+    dataColl = new DataColl url + 'DonorView', id: ' '
+    # dataColl = new DataColl 'parsedData', id: ' '
+    dataColl.getAll (err, data) ->
       donationsArray = []
       for obj in data
         donationsArray.push obj.amount

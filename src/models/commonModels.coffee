@@ -15,7 +15,4 @@ exports.FileUpload = class FileUpload extends Model
   constructor: (id = ' ') ->
     super collectionName, _id: id
 
-exports.ParsedData = class ParsedData extends Model
-  collectionName = 'parsedData'
-  constructor: (id = ' ') ->
-    super collectionName, _id: id
+exports.DataColl = class DataColl extends Model

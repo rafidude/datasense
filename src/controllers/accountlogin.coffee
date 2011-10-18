@@ -3,7 +3,7 @@ User = (require '../models/commonModels').User
 module.exports = (app) ->
   app.get "/", (req, res) ->
     url = req.session.url
-    if url then res.redirect '#{url}/charts' else res.render 'login'
+    if url? then res.redirect '#{url}/charts' else res.render 'login'
 
   app.get "/login", (req, res) ->
     res.render 'login'
@@ -19,7 +19,7 @@ module.exports = (app) ->
         url = "/#{user.url}/charts"
         res.redirect url
       else
-        res.redirect '/', locals: redir: req.body.redir
+        res.redirect '/login'
 
   app.get "/newaccount", (req, res) ->
     res.render 'newaccount'

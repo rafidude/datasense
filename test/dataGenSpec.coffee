@@ -1,5 +1,5 @@
 DataGen = (require "../lib/utils/dataGen").DataGen
-ParsedData = (require '../lib/models/commonModels').ParsedData
+DataColl = (require '../lib/models/commonModels').DataColl
 
 columnsDef = 
   ID:'auto'
@@ -28,7 +28,7 @@ transforms =
 generateDonorData = ->
   dataGen = new DataGen columnsDef, 200, transforms
   data = dataGen.generateData()
-  dataGen.saveData data, (err, result) ->
+  dataGen.saveData 'testColl', data, (err, result) ->
     1
 
 describe "Data generation tests for Donors", ->
@@ -69,13 +69,13 @@ describe "Data generation tests for Donors", ->
     expect(data.length).toBe 1
     expect(data[0].Amount).toBe 42
 
-  it "should save data to parsedData collection", ->
+  it "should save data to dataCollData collection", ->
     dataGen = new DataGen columnsDef, 3, transforms
     data = dataGen.generateData()
-    dataGen.saveData data, (err, result) ->
+    dataGen.saveData 'testColl', data, (err, result) ->
       expect(err).toBe null
-      parsedData = new ParsedData
-      parsedData.getAll (err, docs) ->
+      dataCollData = new DataColl 'testColl', id: ' '
+      dataCollData.getAll (err, docs) ->
         expect(docs.length).toBe 3
         expect(docs[0].ID).toBe 1
         expect(docs[2].ID).toBe 3

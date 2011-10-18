@@ -1,4 +1,4 @@
-ParsedData = (require '../models/commonModels').ParsedData
+DataColl = (require '../models/commonModels').DataColl
 
 exports.DataGen = class DataGen
   constructor: (@definition, @dataRows = 10, @transforms = null) ->
@@ -36,8 +36,8 @@ exports.DataGen = class DataGen
       data.push rowData
     data
   
-  saveData: (data, callback) ->
-    parsedData = new ParsedData
-    parsedData.removeAll =>
-      parsedData.save data, (err, result) =>
+  saveData: (collectionName, data, callback) ->
+    dataColl = new DataColl collectionName, id: ' '
+    dataColl.removeAll =>
+      dataColl.save data, (err, result) =>
         callback err, result

@@ -36,7 +36,7 @@ var onSuccess = function(x, y) {
 
 var getDonationsData = function(){
   var bars1, bars2;
-  var jqxhr = $.getJSON("/other/donations", function(data) {
+  var jqxhr = $.getJSON(window.location.pathname + ".json", function(data) {
     x = data.x;
     y = data.y;
     onSuccess(x, y);

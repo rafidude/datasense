@@ -37,8 +37,8 @@ getUploadParams = ->
 S3File = (require './s3file').S3File
 CSV2JS = require './CSV2JS'
 toJS = CSV2JS.csvToJs
-ParsedData = (require '../models/commonModels').ParsedData
-parsedData = new ParsedData
+DataColl = (require '../models/commonModels').DataColl
+dataColl = new DataColl 'temp', id: ' '
 request = require("request")
 FileUpload = (require '../models/commonModels').FileUpload
 fileUpload = new FileUpload
@@ -58,9 +58,7 @@ exports.parseFile = parseFile = (url) ->
           console.log err
         else 
           parsedRet = toJS res
-          parsedData.save parsedRet.data, (err, success) =>
+          dataColl.save parsedRet.data, (err, success) =>
             console.log "Saved data after parsing the file uploaded: #{url}"
             fileUpload.remove {assembly_url: url}, (err, success) ->
               if err then console.log err else console.log "removed row"
-
-

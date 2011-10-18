@@ -1,7 +1,7 @@
 (function() {
-  var DataGen, ParsedData, columnsDef, generateDonorData, maleNames, surNames, transforms;
+  var DataColl, DataGen, columnsDef, generateDonorData, maleNames, surNames, transforms;
   DataGen = (require("../lib/utils/dataGen")).DataGen;
-  ParsedData = (require('../lib/models/commonModels')).ParsedData;
+  DataColl = (require('../lib/models/commonModels')).DataColl;
   columnsDef = {
     ID: 'auto',
     memberID: 'number random 1000',
@@ -36,7 +36,7 @@
     var data, dataGen;
     dataGen = new DataGen(columnsDef, 200, transforms);
     data = dataGen.generateData();
-    return dataGen.saveData(data, function(err, result) {
+    return dataGen.saveData('testColl', data, function(err, result) {
       return 1;
     });
   };
@@ -83,15 +83,17 @@
       expect(data.length).toBe(1);
       return expect(data[0].Amount).toBe(42);
     });
-    return it("should save data to parsedData collection", function() {
+    return it("should save data to dataCollData collection", function() {
       var data, dataGen;
       dataGen = new DataGen(columnsDef, 3, transforms);
       data = dataGen.generateData();
-      dataGen.saveData(data, function(err, result) {
-        var parsedData;
+      dataGen.saveData('testColl', data, function(err, result) {
+        var dataCollData;
         expect(err).toBe(null);
-        parsedData = new ParsedData;
-        return parsedData.getAll(function(err, docs) {
+        dataCollData = new DataColl('testColl', {
+          id: ' '
+        });
+        return dataCollData.getAll(function(err, docs) {
           expect(docs.length).toBe(3);
           expect(docs[0].ID).toBe(1);
           expect(docs[2].ID).toBe(3);
