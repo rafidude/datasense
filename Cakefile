@@ -15,6 +15,8 @@ build = (watch, callback) ->
   options = ['-c', '-o', 'lib', 'src']
   options.unshift '-w' if watch
   runCommand 'coffee', options
+  options = ['-w', '-c', '-o', 'spec', 'test']
+  runCommand 'coffee', options
 
 task 'watch', 'Recompile CoffeeScript source files when modified', ->
   build true
@@ -26,10 +28,6 @@ task 'temp', 'Prototyping not so well known functions, apis etc.', ->
 task 'test', 'Test features using jasmine-node', ->
   options = ['spec']
   runCommand 'jasmine-node', options
-
-task 'specw', 'Recompile CoffeeScript spec source files when modified', ->
-  options = ['-w', '-c', '-o', 'spec', 'test']
-  runCommand 'coffee', options
 
 task 'run', 'Run the web application using node-supervisor', ->
   options = ['-w', 'lib', '-p', 'lib/controllers/web.js']

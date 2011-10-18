@@ -19,28 +19,24 @@ app.configure 'development', ->
     dumpExceptions: true
     showStack: true
 
-orgs = []
-getOrgs = ->
-  # db.client.smembers 'orgs', (err, result) ->
-  #   console.log err if err
-  #   orgs = result
-  #   console.log orgs
-  orgs = ['bmcm', 'rfp']
-getOrgs()
+urls = []
+getUrls = ->
+  urls = ['bmcm', 'rfp']
+getUrls()
 
-# app.get "*", (req, res, next) ->
-#   console.log req.headers.host
-#   idx = req.headers.host.indexOf('.')
-#   company = req.headers.host[0..idx]
-#   if req.url is "/" and company in orgs
-#     req.url = '/' + company + req.url
-#   next()
-
-app.get "/upload", (req, res) ->
-  res.render 'upload'
+app.get "*", (req, res, next) ->
+  if req.url is "/" or req.url is "/login" or req.url is "/newaccount" or req.url is "/favicon.ico"
+  else
+    url = req.session?.url
+    if url?
+      validUrl = url in urls
+  next()
 
 require('./accountlogin')(app)
 require('./dashboard')(app)
+
+app.get "/upload", (req, res) ->
+  res.render 'upload'
 
 app.post "/filesready", (req, res) ->
   console.log req.params.transloadit

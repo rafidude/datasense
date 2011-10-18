@@ -2,7 +2,8 @@ User = (require '../models/commonModels').User
 
 module.exports = (app) ->
   app.get "/", (req, res) ->
-    res.render 'login'
+    url = req.session.url
+    if url then res.redirect '#{url}/charts' else res.render 'login'
 
   app.get "/login", (req, res) ->
     res.render 'login'
@@ -14,8 +15,9 @@ module.exports = (app) ->
     userI.get (err, user) ->
       throw err if err
       if user and user.password is password
-        req.session.user = user
-        res.redirect req.body.redir or '/charts'
+        req.session.url = user.url
+        url = "/#{user.url}/charts"
+        res.redirect url
       else
         res.redirect '/', locals: redir: req.body.redir
 
@@ -24,7 +26,6 @@ module.exports = (app) ->
 
   app.post "/newaccount", (req, res) ->
     data = req.body.data
-    console.log data
     user = new User
     user.save data, (err, success) ->
-      res.end JSON.stringify(data)
+      res.redirect '/login'
