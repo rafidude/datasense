@@ -1,3 +1,8 @@
+exports.requiresLogin = (req, res, next) ->
+  url = req.url.split('/')[1]
+  sessionUrl = req.session?.url
+  if sessionUrl? and url is sessionUrl then next() else res.redirect '/login'
+
 dynamicSort = (property) ->
   func = (a, b) ->
     return -1 if (a[property] < b[property])
@@ -52,29 +57,35 @@ S3File = (require './s3file').S3File
 CSV2JS = require './CSV2JS'
 toJS = CSV2JS.csvToJs
 DataColl = (require '../models/commonModels').DataColl
-dataColl = new DataColl 'temp', id: ' '
 request = require("request")
 FileUpload = (require '../models/commonModels').FileUpload
 fileUpload = new FileUpload
 DataGen = (require "../utils/dataGen").DataGen
 
-exports.parseFile = parseFile = (url) ->
+exports.parseFile = parseFile = (collectionName, url) ->
   # if the status is complete, get the amazon file, parse the file, store results in mongoDB
   request url, (error, response, body) =>
+    console.log error if error
     if not error and response.statusCode == 200
       result = JSON.parse(body)
       s3url = result.results[':original'][0].url
       arrurl = s3url.split('/')
       account = arrurl[3]
       fileName = '/' + arrurl[4] + '/' + arrurl[5]
+      s = arrurl[5].split('.')[0]
+      collectionName += s[0].toUpperCase() + s[1..s.length]
+      console.log collectionName
       s3 = new S3File account, fileName
       s3.get (err, res) =>
         if err
           console.log err
         else 
           parsedRet = toJS res
+          console.log "Parse Error: ", parsedRet.error, parsedRet.message if parsedRet.error
+          dataColl = new DataColl collectionName, id: ' '
           dataColl.save parsedRet.data, (err, success) =>
             console.log "Saved data after parsing the file uploaded: #{url}"
+            # May be instead of remove we need to move it to archive
             fileUpload.remove {assembly_url: url}, (err, success) ->
               if err then console.log err else console.log "removed row"
 
@@ -173,7 +184,10 @@ convertToCSV = (objArray) ->
   array = (if typeof objArray isnt "object" then JSON.parse(objArray) else objArray)
   str = ""
   i = 0
-
+  obj = array[0] if array.length > 0
+  for key, value of obj
+    str += key + ","
+  str = str[0..str.length-2] + "\r\n"
   while i < array.length
     line = ""
     for index of array[i]

@@ -2,12 +2,7 @@ DataColl = (require '../models/commonModels').DataColl
 utils = (require '../utils/dutils')
 
 module.exports = (app) ->
-  requiresLogin = (req, res, next) ->
-    url = req.url.split('/')[1]
-    sessionUrl = req.session?.url
-    if sessionUrl? and url is sessionUrl then next() else res.redirect '/login'
-
-  app.get "/:url/generatedata/:rows?", requiresLogin, (req, res) ->
+  app.get "/:url/generatedata/:rows?", (req, res) ->
     rows = req.params.rows
     url = req.params.url
     if not rows? and isNaN parseInt(rows) then rows = 100 else rows = parseInt(rows)
@@ -16,7 +11,7 @@ module.exports = (app) ->
     utils.saveDonorsView rows, url, (err, result) ->
       res.redirect "/#{url}/charts"
 
-  app.get "/:url/charts", requiresLogin, (req, res) ->  
+  app.get "/:url/charts", (req, res) ->  
     url = req.params.url
     dataColl = new DataColl url + 'DonorView', id: ' '
     dataColl.getAll (err, data) ->
@@ -45,14 +40,14 @@ module.exports = (app) ->
       top = null if top is -1
       res.render "table", data: data, top: top
 
-  app.get "/:url/charts.json", requiresLogin, (req, res) ->
+  app.get "/:url/charts.json", (req, res) ->
     url = req.params.url
     utils.getDonorViewChart url, (err, chartData) ->
       msgs_json = JSON.stringify(chartData)
       res.writeHead(200, {'Content-Type': 'application/json'})
       res.end(msgs_json)
 
-  app.get "/:url/charts.csv", requiresLogin, (req, res) ->
+  app.get "/:url/donors.csv", (req, res) ->
     url = req.params.url
     utils.getCollDataAsCSV 'Donors', url, (err, csv) ->
       res.writeHead(200, {'Content-Type': 'application/csv'})
