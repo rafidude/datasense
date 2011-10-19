@@ -37,7 +37,7 @@ require('./dashboard')(app)
 
 app.get "/:url/upload", (req, res) ->
   url = req.params.url
-  doneUrl = "http://localhost:3000/#{url}/done"
+  doneUrl = "http://#{req.headers.host}/#{url}/done"
   [encodedParams, paramsStr, hash] = utils.getUploadParams(doneUrl)
   res.render 'upload', encodedParams: encodedParams, hash: hash
 
