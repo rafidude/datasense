@@ -17,7 +17,6 @@ module.exports = (app) ->
 
   setInterval ->
       fileUpload.getAll (err, docs) ->
-        console.log docs if not err and docs.length > 0
         for doc in docs
           utils.parseFile(doc.account, doc.assembly_url)
     , 5000

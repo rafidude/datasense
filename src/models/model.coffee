@@ -23,3 +23,7 @@ exports.Model = class Model
   remove: (criteria, callback) =>
     @db.remove (err, success) ->
       callback() if callback?
+
+  count: (callback) =>
+    @db.count {}, (err, count) ->
+      if err then callback err, null else callback null, count if callback?

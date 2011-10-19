@@ -74,7 +74,6 @@ exports.parseFile = parseFile = (collectionName, url) ->
       fileName = '/' + arrurl[4] + '/' + arrurl[5]
       s = arrurl[5].split('.')[0]
       collectionName += s[0].toUpperCase() + s[1..s.length]
-      console.log collectionName
       s3 = new S3File account, fileName
       s3.get (err, res) =>
         if err
@@ -83,11 +82,17 @@ exports.parseFile = parseFile = (collectionName, url) ->
           parsedRet = toJS res
           console.log "Parse Error: ", parsedRet.error, parsedRet.message if parsedRet.error
           dataColl = new DataColl collectionName, id: ' '
-          dataColl.save parsedRet.data, (err, success) =>
-            console.log "Saved data after parsing the file uploaded: #{url}"
-            # May be instead of remove we need to move it to archive
-            fileUpload.remove {assembly_url: url}, (err, success) ->
-              if err then console.log err else console.log "removed row"
+          dataColl.removeAll =>
+            dataColl.save parsedRet.data, (err, result) =>
+              if err
+                console.log "Error saving data after parsing: ", err 
+              else
+                dataColl.count (err, count) =>
+                  if err then console.log "Parse Count: " + err
+                  console.log "Saved #{count} rows to #{collectionName} collection after parsing the file: #{arrurl[5]}"
+                  # May be instead of remove we need to move it to archive
+                  fileUpload.remove {assembly_url: url}, (err, success) ->
+                    if err then console.log err else console.log "removed row"
 
 exports.saveDonorsView = (numRows, url, callback) ->
   maleNames = ['James','John','Robert','Michael','William','David','Richard','Charles','Joseph','Thomas','Christopher','Daniel','Paul','Mark','Donald','George','Kenneth','Steven','Edward','Brian','Ronald','Anthony','Kevin','Jason','Matthew','Gary','Timothy','Jose','Larry','Jeffrey','Frank','Scott','Eric','Stephen','Andrew','Raymond','Gregory','Joshua','Jerry','Dennis','Walter','Patrick','Peter','Harold','Douglas','Henry','Carl','Arthur','Ryan','Roger','Joe','Juan','Jack','Albert','Jonathan','Justin','Terry','Gerald','Keith','Samuel','Willie','Ralph','Lawrence','Nicholas','Roy','Benjamin','Bruce','Brandon','Adam','Harry','Fred','Wayne','Billy','Steve','Louis','Jeremy','Aaron','Randy','Howard','Eugene','Carlos','Russell','Bobby','Victor','Martin','Ernest','Phillip','Todd','Jesse','Craig','Alan','Shawn','Clarence','Sean','Philip','Chris','Johnny','Earl','Jimmy','Antonio','Danny','Bryan','Tony','Luis','Mike','Stanley','Leonard','Nathan','Dale','Manuel','Rodney','Curtis','Norman','Allen','Marvin','Vincent','Glenn','Jeffery','Travis','Jeff','Chad','Jacob','Lee','Melvin','Alfred','Kyle','Francis','Bradley','Jesus','Herbert','Frederick','Ray','Joel','Edwin','Don','Eddie','Ricky','Troy','Randall','Barry','Alexander','Bernard','Mario','Leroy','Francisco','Marcus','Micheal','Theodore','Clifford','Miguel','Oscar','Jay','Jim','Tom','Calvin','Alex','Jon','Ronnie','Bill','Lloyd','Tommy','Leon','Derek','Warren','Darrell','Jerome','Floyd','Leo','Alvin','Tim','Wesley','Gordon','Dean','Greg','Jorge','Dustin','Pedro','Derrick','Dan','Lewis','Zachary','Corey','Herman','Maurice','Vernon','Roberto','Clyde','Glen','Hector','Shane','Ricardo','Sam','Rick','Lester','Brent','Ramon','Charlie','Tyler','Gilbert','Gene','Marc','Reginald','Ruben','Brett','Angel','Nathaniel','Rafael','Leslie','Edgar','Milton','Raul','Ben','Chester','Cecil','Duane','Franklin','Andre','Elmer','Brad','Gabriel','Ron','Mitchell','Roland','Arnold','Harvey','Jared','Adrian','Karl','Cory','Claude','Erik','Darryl','Jamie','Neil','Jessie','Christian','Javier','Fernando','Clinton','Ted','Mathew','Tyrone','Darren','Lonnie','Lance','Cody','Julio','Kelly','Kurt','Allan','Nelson','Guy','Clayton','Hugh','Max','Dwayne','Dwight','Armando','Felix','Jimmie','Everett','Jordan','Ian','Wallace','Ken','Bob','Jaime','Casey','Alfredo','Alberto','Dave','Ivan','Johnnie','Sidney','Byron','Julian','Isaac','Morris','Clifton','Willard','Daryl','Ross','Virgil','Andy','Marshall','Salvador','Perry','Kirk','Sergio','Marion','Tracy','Seth','Kent','Terrance','Rene','Eduardo','Terrence','Enrique','Freddie','Wade']
