@@ -35,13 +35,16 @@ app.get "*", (req, res, next) ->
 require('./accountlogin')(app)
 require('./dashboard')(app)
 
-app.get "/upload", (req, res) ->
-  res.render 'upload'
+app.get "/:url/upload", (req, res) ->
+  url = req.params.url
+  doneUrl = "http://localhost:3000/#{url}/done"
+  [encodedParams, paramsStr, hash] = utils.getUploadParams(doneUrl)
+  res.render 'upload', encodedParams: encodedParams, hash: hash
 
-app.post "/filesready", (req, res) ->
+app.post "/:url/filesready", (req, res) ->
   console.log req.params.transloadit
 
-app.get "/done", (req, res) ->
+app.get "/:url/done", (req, res) ->
   data = req.query
   fileUpload.save data, (err, success) ->
     res.end JSON.stringify(data)

@@ -1,5 +1,5 @@
 Useful Commands:
-ps aux | grep node
+ps aux | grep web.js
 kill -9 PID
 
 expect(x).toEqual(y)

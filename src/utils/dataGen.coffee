@@ -41,3 +41,6 @@ exports.DataGen = class DataGen
     dataColl.removeAll =>
       dataColl.save data, (err, result) =>
         callback err, result
+
+
+    
