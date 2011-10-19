@@ -25,7 +25,7 @@ app.get "*", (req, res, next) ->
     sessionUrl = req.session?.url
     if sessionUrl? and url is sessionUrl then next() else res.redirect '/login'
 
-require('./accountLogin')(app)
+require('./signupLogin')(app)
 require('./dashboard')(app)
 require('./uploadProcess')(app)
 
