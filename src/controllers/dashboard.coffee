@@ -1,7 +1,17 @@
 DataColl = (require '../models/commonModels').DataColl
 utils = (require '../utils/dutils')
+DB = (require "../models/db").DB
 
 module.exports = (app) ->
+  app.get "/:url/alldata", (req, res) ->
+    url = req.params.url
+    db = new DB ''
+    db.getAccountCollections url, (err, data) ->
+      columns = []
+      for k, v of data[0]
+        columns.push k
+      res.render "grid", data: data, columns: columns
+
   app.get "/:url/generatedata/:rows?", (req, res) ->
     rows = req.params.rows
     url = req.params.url

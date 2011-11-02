@@ -1,0 +1,20 @@
+script(type='text/javascript', src='http://code.jquery.com/jquery-latest.js')
+script(type='text/javascript', src='/js/jquery.dataTables.min.js')
+link(href='/css/demo_table.css', rel='stylesheet', type='text/css')
+script(type='text/javascript')
+  $(function(){     
+    $('#table_id').dataTable({"sScrollY": "400px","bPaginate": false});
+  });
+
+br
+h1 Data Grid showing #{data.length} Rows
+br
+table#table_id.display
+  thead
+    - for col in columns
+      th= col[0].toUpperCase() + col.substring(1)
+  tbody
+    - for row in data
+      tr
+        - for col in columns
+          td= row[col]

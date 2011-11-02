@@ -122,3 +122,25 @@ exports.DB = class DB
   removeAll : (callback) ->
     @remove null, (err, success) ->
       if err then callback false else callback true if callback?
+
+  getAccountCollections : (url, callback) ->
+    @connection (err, conn) =>
+      conn.collectionNames (err, names) ->
+        objArr = []
+        counter = 0
+        filteredNames = (name for name in names when name.name.split('.')[1].indexOf(url) >= 0)
+        total = filteredNames.length
+        try
+          for name in filteredNames
+            collName = name.name.split('.')[1]
+            conn.collection collName, (err, coll) =>
+              cName = collName
+              coll.count {}, (err, count) =>
+                obj = {name: cName, amount: count}
+                ++counter
+                objArr.push obj
+                if counter is total
+                  conn.close()
+                  callback null, objArr
+        catch error
+          console.log error
