@@ -65,7 +65,7 @@ DataGen = (require "../utils/dataGen").DataGen
 exports.parseFile = parseFile = (collectionName, url) ->
   # if the status is complete, get the amazon file, parse the file, store results in mongoDB
   request url, (error, response, body) =>
-    console.log error if error
+    console.log url, error if error
     if not error and response.statusCode == 200
       result = JSON.parse(body)
       s3url = result.results[':original'][0].url
@@ -118,6 +118,7 @@ exports.saveDonorsView = (numRows, url, callback) ->
       donation
   dataGen = new (require "../utils/dataGen").DataGen columns, numRows, transforms
   data = dataGen.generateData()
+  console.log data
   dataGen.saveData url + 'DonorView', data, (err, result) ->
     callback err, result if callback?
 

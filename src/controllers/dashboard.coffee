@@ -1,6 +1,7 @@
 DataColl = (require '../models/commonModels').DataColl
 utils = (require '../utils/dutils')
 DB = (require "../models/db").DB
+dbviews = require "../utils/dbviews"
 
 module.exports = (app) ->
   app.get "/:url/alldata", (req, res) ->
@@ -20,6 +21,29 @@ module.exports = (app) ->
     utils.saveDonorsHistory rows, url
     utils.saveDonorsView rows, url, (err, result) ->
       res.redirect "/#{url}/charts"
+
+  app.get "/:url/createview", (req, res) ->
+    # The viewStr is parsed into the following viewDef object
+    # viewStr = '''select ID, name, sum(amount), count(amount) as total
+    # from persons, history
+    # groupBy ID, name'''
+    viewDef =
+      name: 'testDonorReport'
+      fields: ['ID', 'name']
+      calculatedFields: [{function: 'sum', on:'amount', as:'total'}, 
+      {function: 'count', on:'date', as:'count'}],
+      from: ['testPersons', 'testHistory']
+      join: [{'testPersons.ID':'testHistory.ID'}]
+      groupBy: ['ID', 'name']
+      keys: ['ID']
+
+    dbviews.populateData viewDef, (err, data) ->
+      console.log data
+      columns = []
+      for k, v of data[0]
+        columns.push k
+      console.log columns
+      res.render "grid", data: data, columns: columns
 
   app.get "/:url/charts", (req, res) ->  
     url = req.params.url
